@@ -4,13 +4,19 @@
 #include <locale.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 #include "array.h"
 #define N 1000
+
+#define MIN 10.0
+#define MAX 50.0
+
 
 int task_11(int size);
 int task_14(int size);
 int task_16_1(int size);
 int task_16_2(int size);
+int task_17(int size);
 
 int main() {
     setlocale(LC_ALL, "Russian");
@@ -20,12 +26,12 @@ int main() {
         puts("Некорректный размер");
         return 1;
     }
-    task_11(size);
-    task_14(size);
-    task_16_1(size);
-    task_16_2(size);
-    
-    
+    //task_11(size);
+    //task_14(size);
+    //task_16_1(size);
+    //task_16_2(size);
+    //task16_h(size);
+    task_17(size);
 }
 int task_11(int size) {
     int temp;
@@ -163,11 +169,11 @@ int task_16_1(int size){
 }
 int task_16_2(int size) {
 
-    double* ptr_array = malloc(size * sizeof(double));
+    double* ptr_array = calloc(size, sizeof(double));
     if (!ptr_array) return 1;
 
     for (int i = 0; i < size; i++) {
-        ptr_array[i] = sin((double)rand() / RAND_MAX * 2.0 * M_PI);
+        ptr_array[i] = MIN + (rand() / (double)RAND_MAX)*(MAX - MIN);
         printf("a[%d] = %.5f\n", i, ptr_array[i]);
     }
     printf("Исходный массив:\n");
@@ -191,5 +197,60 @@ int task_16_2(int size) {
     put_elements(ptr_array, size);
 
     free(ptr_array);
+    return 0;
+}
+
+
+int task16_h(int size) {
+    srand(time(NULL));  
+
+    int size_a, size_b, size_c, size_d;
+
+    
+    double* arr_a = generate_array(&size_a);
+    double* arr_b = generate_array(&size_b);
+    double* arr_c = generate_array(&size_c);
+
+    double* d = create_arr_d(arr_a, arr_b, arr_c, size_a, size_b, size_c, &size_d);
+
+    put_elements(arr_a, size_a);
+    put_elements(arr_b, size_b);
+    put_elements(arr_c, size_c);
+    put_elements(d, size_d); 
+}
+
+
+int task_17(int size) {
+    int sizes[] = { 100, 1000, 10000 };
+    char* sorts[] = { "Выбором", "Пузырек", "Коктейль", "Вставки" };
+
+    printf("| Размер | %8s | %8s | %8s | %8s |\n",
+        sorts[0], sorts[1], sorts[2], sorts[3]);
+    printf("|--------|--------|--------|--------|--------|\n");
+
+    for (int s = 0; s < 3; s++) {
+        int size = sizes[s];
+        printf("| %6d |", size);
+
+        for (int i = 0; i < 4; i++) {
+            double avg_time = 0;
+            for (int j = 0; j < 100; j++) {
+                double* arr = malloc(size * sizeof(double));
+                srand(time(NULL)); full_elements(arr, size);
+
+                clock_t t = clock();
+                switch (i) {
+                case 0: sort_select(arr, size); break;
+                case 1: sort_bubble(arr, size); break;
+                case 2: sort_cocktail(arr, size); break;
+                case 3: sort_insert(arr, size); break;
+                }
+                avg_time += (clock() - t) * 1. / CLOCKS_PER_SEC;
+                free(arr);
+            }
+            printf(" %7.4f |", avg_time / 10);
+        }
+        printf("\n");
+    }
     return 0;
 }
