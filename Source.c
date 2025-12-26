@@ -16,6 +16,7 @@ int task_11(int size);
 int task_14(int size);
 int task_16_1(int size);
 int task_16_2(int size);
+int task16_h(int size);
 int task_17(int size);
 
 int main() {
@@ -254,3 +255,4 @@ int task_17(int size) {
     }
     return 0;
 }
+
