@@ -164,6 +164,7 @@ void sort_bubble(double* ptr_array, int n) {
             }
         }
     }
+    return 0;
 }
 
 
@@ -182,6 +183,7 @@ void sort_select(double* ptr_array, int n) {
             ptr_array[imax] = temp;
         }
     }
+    return 0;
 }
 
 
@@ -197,9 +199,10 @@ void sort_insert(double* ptr_array, int n) {
         }
         ptr_array[j] = temp;
     }
+    return 0;
 }
 
-void sort_cocktail(double* arr, int size) {
+int sort_cocktail(double* arr, int size) {
     int swapped;
     int left = 0;
     int right = size - 1;
@@ -229,7 +232,9 @@ void sort_cocktail(double* arr, int size) {
             }
         }
     } while (swapped && left < right);
+    return 0;
 }
+
 
 
 
